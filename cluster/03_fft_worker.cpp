@@ -112,42 +112,6 @@ int main(int argc, char **argv) {
     }
     t1 = MPI_Wtime();
     cout << "FPS: " << frames / (t1 - t0) << endl;
-    /*
-	if(world_rank == 0) {
-	    cout << "Took " << t1 - t0 << "s" << endl;
-	    * Double the send_counts and displs array, as we send back a complex
-	     * array with real and imaginary part *
-	    for(int i=0; i<world_size; i++) {
-		send_counts[i] *= 2;
-		displs[i] *= 2;
-	    }
-	}
-    Mat magnitude(my_row_count, n1, CV_32FC1);
-    for(int y=0; y<my_row_count; y++)
-	for(int x=0; x<n1; x++)
-	    magnitude.at<float>(y*n1+x) = sqrt(
-		    buffer[y*n1+x][0] * buffer[y*n1+x][0] +
-		    buffer[y*n1+x][1] * buffer[y*n1+x][1]);
-    string filename("test"+to_string(world_rank)+".png");
-    imwrite(filename, magnitude);
-
-    MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Gatherv(buffer, my_row_count * n1, MPI_FLOAT,
-	    image, send_counts, displs, MPI_FLOAT, 0, MPI_COMM_WORLD);
-    if(world_rank == 0) {
-	Mat magspec(n0, n1, CV_32FC1);
-	cout << "FFT 1st pixel: " << image[0] << endl;
-
-	for(int row=0; row<n0; row++) {
-	    for(int col=0; col<n1; col++) {
-		float val= sqrt(
-		    image[2*(row*n0+col)+0] * image[2*(row*n0+col)+0] +
-		    image[2*(row*n0+col)+1] * image[2*(row*n0+col)+1]);
-		magspec.at<float>(row*n0+col) = val / 2.0;
-	    }
-	}
-	imwrite("test2.png", magspec);
-    }*/
 
     fftwf_destroy_plan(plan);
     fftwf_mpi_cleanup();
